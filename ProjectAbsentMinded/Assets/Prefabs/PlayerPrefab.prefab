@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 7823555733496803524}
   - component: {fileID: 7823555733496803527}
   - component: {fileID: 7823555733496803526}
-  m_Layer: 0
+  - component: {fileID: 1332395011}
+  m_Layer: 8
   m_Name: Player Body
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -315,6 +316,22 @@ MonoBehaviour:
   m_FootstepSounds: []
   m_JumpSound: {fileID: 0}
   m_LandSound: {fileID: 0}
+--- !u!114 &1332395011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7823555733496803533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96594d522e8b9e041aac0bd7fbddd865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reachDistance: 2
+  camera: {fileID: 0}
+  heldItem: {fileID: 0}
+  holdPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &7823555733816667139
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +343,7 @@ GameObject:
   - component: {fileID: 7823555733816667136}
   - component: {fileID: 7823555733816667262}
   - component: {fileID: 7823555733816667137}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -407,9 +424,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7823555734304914680}
-  m_Layer: 0
-  m_Name: Test Player
-  m_TagString: Untagged
+  m_Layer: 8
+  m_Name: PlayerPrefab
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
