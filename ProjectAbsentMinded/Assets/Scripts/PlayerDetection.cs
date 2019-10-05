@@ -54,10 +54,17 @@ public class PlayerDetection : MonoBehaviour
             RaycastHit raycastHit = new RaycastHit();
             foreach (Ray r in searchRays)
             {
+
+                // If it hits anything with the obstacle layer, move to the next ray
+                if (Physics.Raycast(r, out raycastHit, viewDistance, LayerMask.GetMask("Obstacles")))
+                    continue;
+
+                // if it made it this far, it will check to see if it hits the player.
                 doesCollide = Physics.Raycast(r, out raycastHit, viewDistance, LayerMask.GetMask("Player"));
+
                 if (doesCollide == true)
                 {
-                    Debug.DrawRay(r.origin, r.direction * viewDistance, Color.yellow);
+                    Debug.DrawRay(r.origin, r.direction * viewDistance, Color.green);
                     if (raycastHit.collider.gameObject.TryGetComponent(out PickupItem picker))
                     {
                         if (picker.HasItem == true)
