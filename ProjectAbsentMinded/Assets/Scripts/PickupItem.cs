@@ -83,11 +83,9 @@ public class PickupItem : MonoBehaviour
             {
                 PickUpItem();
             }
-            else
-            {
-                // Drop Item
-                DropItem();
-            }
+        }
+        else if (Input.GetMouseButtonUp(0)) {
+            DropItem();
         }
     }
 
