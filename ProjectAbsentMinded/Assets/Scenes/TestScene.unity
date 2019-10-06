@@ -897,5 +897,65 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803530, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_Height
+      value: 1.8800554
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803530, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.015470505
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_FootstepSounds.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_JumpSound
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_LandSound
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_FootstepSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_FootstepSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_FootstepSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_FootstepSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: e9714160ce34f2b4ab63ff8c27bd68e1, type: 3}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_StepInterval
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_UseHeadBob
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823555733496803526, guid: a4506962108066c4e940e92d7b973552,
+        type: 3}
+      propertyPath: m_StickToGroundForce
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4506962108066c4e940e92d7b973552, type: 3}
