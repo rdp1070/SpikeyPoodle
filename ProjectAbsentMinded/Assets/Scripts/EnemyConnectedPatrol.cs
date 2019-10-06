@@ -12,7 +12,6 @@ namespace Assets.Code
         //Private variables for base behaviour.
         ConnectedWaypoint _previousWaypoint;
 
-        bool _travelling;
         bool _waiting;
         float _waitTimer;
         int _waypointsVisited;
@@ -59,9 +58,11 @@ namespace Assets.Code
 
                 SetDestination();
             }
+            //TODO: change this to sawPlayerStealing
+            this.GetComponent<PlayerDetection>().sawPlayer.AddListener(OnSeePlayer);
         }
 
-        public void Update()
+        public override void Update()
         {
             base.Update();
             //Check if we're close to the destination.
@@ -99,7 +100,6 @@ namespace Assets.Code
         {
             if (chasingPlayer)
             {
-                base.OnSeePlayer();
                 base.ChasePlayer();
             }
             else
@@ -113,8 +113,9 @@ namespace Assets.Code
 
                 Vector3 targetVector = _currentWaypoint.transform.position;
                 _navMeshAgent.SetDestination(targetVector);
-                _travelling = true;
             }
+
+            _travelling = true;
         }
     }
 }

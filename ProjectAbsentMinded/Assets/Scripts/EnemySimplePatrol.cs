@@ -5,15 +5,12 @@ using UnityEngine.AI;
 
 public class EnemySimplePatrol : BaseEnemy
 {
-  
-
     //The list of all patrol nodes to visit.
     [SerializeField]
     List<Waypoint> _patrolPoints;
 
     //Private variables for base behaviour.
     int _currentPatrolIndex;
-    bool _travelling;
     bool _waiting;
     bool _patrolForward;
     float _waitTimer;
@@ -39,8 +36,10 @@ public class EnemySimplePatrol : BaseEnemy
                 Debug.Log("Insufficient patrol points for basic patrolling behaviour.");
             }
         }
+        //TODO: change this to sawPlayerStealing
+        this.GetComponent<PlayerDetection>().sawPlayer.AddListener(OnSeePlayer);
     }
-    public void Update()
+    public override void Update()
     {
         base.Update();
         //Check if we're close to the destination.
@@ -79,7 +78,6 @@ public class EnemySimplePatrol : BaseEnemy
     {
         if (chasingPlayer)
         {
-            base.OnSeePlayer();
             base.ChasePlayer();
         }
         else
@@ -89,9 +87,9 @@ public class EnemySimplePatrol : BaseEnemy
                 Vector3 targetVector = _patrolPoints[_currentPatrolIndex].transform.position;
                 _currentWaypoint = (ConnectedWaypoint)_patrolPoints[_currentPatrolIndex];
                 _navMeshAgent.SetDestination(targetVector);
-                _travelling = true;
             }
         }
+        _travelling = true;
     }
 
     /// <summary>

@@ -17,7 +17,8 @@ public class BaseEnemy : MonoBehaviour
     Vector3 pointA;
     Vector3 pointB;
     protected bool rotationInit = false;
-    public float rotationSpeed = 0.46f;
+    protected float rotationSpeed = 0.46f;
+    protected bool _travelling;
 
     protected NavMeshAgent _navMeshAgent;
     protected float walkSpeed = 3.5f;
@@ -40,6 +41,14 @@ public class BaseEnemy : MonoBehaviour
     public virtual void Start()
     {
         _navMeshAgent = this.GetComponent<NavMeshAgent>();
+
+        //PlayerDetection playerDetection = this.GetComponent<PlayerDetection>();
+        //if (playerDetection == null)
+        //{
+        //  Debug.Log("player detec is null");
+        //}
+        //playerDetection.sawPlayerStealing.AddListener(OnSeePlayer);
+        //this.GetComponent<PlayerDetection>().sawPlayerStealing.AddListener(OnSeePlayer);
     }
 
     // Update is called once per frame
@@ -92,11 +101,12 @@ public class BaseEnemy : MonoBehaviour
         timeChasing = timeToChase;
         _navMeshAgent.acceleration = runAcceleration;
         _navMeshAgent.speed = runSpeed;
+        ChasePlayer();
     }
 
     public virtual void ChasePlayer()
     {
         _navMeshAgent.SetDestination(chaseLocation);
-        //_travelling = true;
+        _travelling = true;
     }
 }
