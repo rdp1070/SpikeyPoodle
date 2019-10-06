@@ -7,23 +7,9 @@ using UnityEngine.AI;
 
 namespace Assets.Code
 {
-    public class EnemyConnectedPatrol : MonoBehaviour
+    public class EnemyConnectedPatrol : BaseEnemy
     {
-        //Dictates whether the agent waits on each node.
-        [SerializeField]
-        bool _patrolWaiting;
-
-        //The total time we wait at each node.
-        [SerializeField]
-        float _totalWaitTime = 3f;
-
-        //The probability of switching direction.
-        [SerializeField]
-        float _switchProbability = 0.2f;
-
         //Private variables for base behaviour.
-        NavMeshAgent _navMeshAgent;
-        ConnectedWaypoint _currentWaypoint;
         ConnectedWaypoint _previousWaypoint;
 
         bool _travelling;
@@ -32,9 +18,9 @@ namespace Assets.Code
         int _waypointsVisited;
 
         // Use this for initialization
-        public void Start()
+        public override void Start()
         {
-            _navMeshAgent = this.GetComponent<NavMeshAgent>();
+            base.Start();
 
             if (_navMeshAgent == null)
             {
@@ -42,6 +28,9 @@ namespace Assets.Code
             }
             else
             {
+                _navMeshAgent.acceleration = runAcceleration;
+                _navMeshAgent.speed = runSpeed;
+
                 if (_currentWaypoint == null)
                 {
                     //Set it at random.
@@ -74,6 +63,7 @@ namespace Assets.Code
 
         public void Update()
         {
+            base.Update();
             //Check if we're close to the destination.
             if (_travelling && _navMeshAgent.remainingDistance <= 1.0f)
             {
@@ -107,16 +97,24 @@ namespace Assets.Code
 
         private void SetDestination()
         {
-            if (_waypointsVisited > 0)
+            if (chasingPlayer)
             {
-                ConnectedWaypoint nextWaypoint = _currentWaypoint.NextWaypoint(_previousWaypoint);
-                _previousWaypoint = _currentWaypoint;
-                _currentWaypoint = nextWaypoint;
+                base.OnSeePlayer();
+                base.ChasePlayer();
             }
+            else
+            {
+                if (_waypointsVisited > 0)
+                {
+                    ConnectedWaypoint nextWaypoint = _currentWaypoint.NextWaypoint(_previousWaypoint);
+                    _previousWaypoint = _currentWaypoint;
+                    _currentWaypoint = nextWaypoint;
+                }
 
-            Vector3 targetVector = _currentWaypoint.transform.position;
-            _navMeshAgent.SetDestination(targetVector);
-            _travelling = true;
+                Vector3 targetVector = _currentWaypoint.transform.position;
+                _navMeshAgent.SetDestination(targetVector);
+                _travelling = true;
+            }
         }
     }
 }

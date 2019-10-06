@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyMove : MonoBehaviour
+public class EnemyMove : BaseEnemy
 {
     [SerializeField]
     Transform _destination;
 
-    NavMeshAgent _navMeshagent;
-
     // Use this for initialization
-    public void Start()
+    public override void Start()
     {
-        _navMeshagent = this.GetComponent<NavMeshAgent>();
+        base.Start();
 
-        if (_navMeshagent == null)
+        if (_navMeshAgent == null)
         {
             Debug.LogError("Nav Mesh Agent component not found attached to " + gameObject.name);
         }
@@ -30,7 +28,7 @@ public class EnemyMove : MonoBehaviour
         if (_destination != null)
         {
             Vector3 targetVector = _destination.transform.position;
-            _navMeshagent.SetDestination(targetVector);
+            _navMeshAgent.SetDestination(targetVector);
         }
     }
 }

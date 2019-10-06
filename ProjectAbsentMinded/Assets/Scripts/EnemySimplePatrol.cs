@@ -3,26 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemySimplePatrol : MonoBehaviour
+public class EnemySimplePatrol : BaseEnemy
 {
-    //Dictates whether the agent waits on each node.
-    [SerializeField]
-    bool _patrolWaiting;
-
-    //The total time we wait at each node.
-    [SerializeField]
-    float _totalWaitTime = 3f;
-
-    //The probability of switching direction.
-    [SerializeField]
-    float _switchProbability = 0.2f;
+  
 
     //The list of all patrol nodes to visit.
     [SerializeField]
     List<Waypoint> _patrolPoints;
 
     //Private variables for base behaviour.
-    NavMeshAgent _navMeshAgent;
     int _currentPatrolIndex;
     bool _travelling;
     bool _waiting;
@@ -30,9 +19,9 @@ public class EnemySimplePatrol : MonoBehaviour
     float _waitTimer;
 
     // Use this for initialization
-    public void Start()
+    public override void Start()
     {
-        _navMeshAgent = this.GetComponent<NavMeshAgent>();
+        base.Start();
 
         if (_navMeshAgent == null)
         {
@@ -49,12 +38,11 @@ public class EnemySimplePatrol : MonoBehaviour
             {
                 Debug.Log("Insufficient patrol points for basic patrolling behaviour.");
             }
-
         }
     }
-
     public void Update()
     {
+        base.Update();
         //Check if we're close to the destination.
         if (_travelling && _navMeshAgent.remainingDistance <= 1.0f)
         {
@@ -89,11 +77,20 @@ public class EnemySimplePatrol : MonoBehaviour
 
     private void SetDestination()
     {
-        if (_patrolPoints != null)
+        if (chasingPlayer)
         {
-            Vector3 targetVector = _patrolPoints[_currentPatrolIndex].transform.position;
-            _navMeshAgent.SetDestination(targetVector);
-            _travelling = true;
+            base.OnSeePlayer();
+            base.ChasePlayer();
+        }
+        else
+        {
+            if (_patrolPoints != null)
+            {
+                Vector3 targetVector = _patrolPoints[_currentPatrolIndex].transform.position;
+                _currentWaypoint = (ConnectedWaypoint)_patrolPoints[_currentPatrolIndex];
+                _navMeshAgent.SetDestination(targetVector);
+                _travelling = true;
+            }
         }
     }
 

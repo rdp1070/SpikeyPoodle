@@ -16,13 +16,11 @@ public class ConnectedWaypoint : Waypoint
 
         //Create a list of waypoints I can refer to later.
         _connections = new List<ConnectedWaypoint>();
-        Debug.Log(allWaypoints.Length);
 
         //Check if they're a connected waypoint.
         for (int i = 0; i < allWaypoints.Length; i++)
         {
             ConnectedWaypoint nextWaypoint = allWaypoints[i].GetComponent<ConnectedWaypoint>();
-            Debug.Log("Adding: " + allWaypoints[i].GetComponent<ConnectedWaypoint>());
 
             //i.e. we found a waypoint.
             if (nextWaypoint != null)
