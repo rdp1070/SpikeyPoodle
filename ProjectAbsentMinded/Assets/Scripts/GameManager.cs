@@ -10,10 +10,13 @@ public class GameManager : MonoBehaviour
 
     public Player player;
     public ScoreZone scoreZone;
-    public BaseItem winItem;
+    [SerializeField]
+    private BaseItem winItem;
+    public BaseItem defaultItem;
     public int numItems;
     public List<BaseItem> allItems = new List<BaseItem>();
     public PlayerDetection[] playerDetectors;
+    public SpawnPoint[] spawnPoints;
     public int visionReduction = 7;
 
     public bool IsThieving { get => CheckPlayerHasItem(); }
@@ -22,18 +25,26 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         playerDetectors = GetComponentsInChildren<PlayerDetection>();
+        spawnPoints = GetComponentsInChildren<SpawnPoint>();
 
         if (scoreZone != null)
         {
             scoreZone.itemEnterScoreZone.AddListener(CheckWin);
         }
-        for (var i = 0; i <= numItems; i++) {
-            var newItem = GenerateItem();
-            // TODO figure out how to not spawn them on top of each other
+        if (player != null)
+        {
+            player.crouched.AddListener(ReduceVision);
+            player.stand.AddListener(ReturnVision);
         }
-
-        player.crouched.AddListener(ReduceVision);
-        player.stand.AddListener(ReturnVision);
+        
+        for (var i = 0; i < spawnPoints.Length; i++)
+        {
+            var newItem = GenerateItem(spawnPoints[i].transform.position);
+            allItems.Add(newItem);
+        }
+        
+        winItem = allItems[UnityEngine.Random.Range(0, allItems.Count)];
+        defaultItem.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -80,14 +91,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    BaseItem GenerateItem()
+    BaseItem GenerateItem( Vector3 spawnPoint = new Vector3())
     {
         BaseItem newItem;
-        newItem = Instantiate<BaseItem>(winItem);
+        newItem = Instantiate<BaseItem>(defaultItem);
         newItem.color = BaseItem.ATTR.COLOR.colors[UnityEngine.Random.Range(0, BaseItem.ATTR.COLOR.colors.Count)];
         newItem.size = BaseItem.ATTR.SIZE.sizes[UnityEngine.Random.Range(0, BaseItem.ATTR.SIZE.sizes.Count)];
         newItem.shape = BaseItem.ATTR.SHAPE.shapes[UnityEngine.Random.Range(0, BaseItem.ATTR.SHAPE.shapes.Count)];
         newItem.weight = BaseItem.ATTR.WEIGHT.weights[UnityEngine.Random.Range(0, BaseItem.ATTR.WEIGHT.weights.Count)];
+        newItem.transform.position = spawnPoint;
         return newItem;
     }
 }
