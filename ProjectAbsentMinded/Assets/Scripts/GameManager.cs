@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
 
     public bool IsThieving { get => CheckPlayerHasItem(); }
 
-
     private void Start()
     {
         playerDetectors = GetComponentsInChildren<PlayerDetection>();
@@ -80,14 +79,17 @@ public class GameManager : MonoBehaviour
             if (winItem.Equals(i))
             {
                 Debug.Log("Winner!");
+                GetComponentInChildren<DialogSystem>().WinDialog();
             }
             else
             {
                 Debug.Log("Not Winning");
+                sendClueInfoToDialog(scoreZone.items[scoreZone.items.Count - 1]);
             }
             // Probably transition to some other screen
             // Or lock the player down and show the credits and a play again button
             // Something like that.
+            // Or say go get me another item!!
         }
     }
 
@@ -101,5 +103,36 @@ public class GameManager : MonoBehaviour
         newItem.weight = BaseItem.ATTR.WEIGHT.weights[UnityEngine.Random.Range(0, BaseItem.ATTR.WEIGHT.weights.Count)];
         newItem.transform.position = spawnPoint;
         return newItem;
+    }
+
+    void sendClueInfoToDialog(BaseItem item)
+    {
+        int amountIncorrect = 0;
+        string randomDifference = "";
+        List<string> allDifferences = new List<string>();
+
+        if (winItem.color != item.color)
+        {
+            amountIncorrect += 1;
+            allDifferences.Add("Color");
+        }
+        if (winItem.size != item.size)
+        {
+            amountIncorrect += 1;
+            allDifferences.Add("Size");
+        }
+        if (winItem.shape != item.shape)
+        {
+            amountIncorrect += 1;
+            allDifferences.Add("Shape");
+        }
+        if (winItem.weight != item.weight)
+        {
+            amountIncorrect += 1;
+            allDifferences.Add("Weight");
+        }
+        randomDifference = allDifferences[UnityEngine.Random.Range(0, allDifferences.Count)];
+
+        GetComponentInChildren<DialogSystem>().GenerateClue(amountIncorrect, randomDifference);
     }
 }
