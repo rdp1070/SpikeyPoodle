@@ -10,22 +10,23 @@ public class ScoreZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        BaseItem newItem;
-        if (other.TryGetComponent(out newItem)) {
+        BaseItem newItem = other.GetComponentInParent<BaseItem>();
+        if ( newItem && other.gameObject.activeInHierarchy) {
             items.Add(newItem);
+            Debug.Log("New Item" + newItem.name + " entered the score zone.");
             itemEnterScoreZone.Invoke();
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        BaseItem newItem;
-        if (other.TryGetComponent(out newItem))
-        {
-            if (items.Contains(newItem)) {
-                items.Remove(newItem);
-            }
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    BaseItem newItem;
+    //    if (other.TryGetComponent(out newItem))
+    //    {
+    //        if (items.Contains(newItem)) {
+    //            items.Remove(newItem);
+    //        }
+    //    }
+    // }
 
 }

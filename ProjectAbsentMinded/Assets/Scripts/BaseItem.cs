@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,11 +13,17 @@ public class BaseItem : MonoBehaviour
     public Color color = ATTR.COLOR.BLUE;
     public string shape = ATTR.SHAPE.CUBE;
 
-    private void Start()
+    public void Init()
     {
-        rigidbody = this.gameObject.GetComponent<Rigidbody>();
-        gameObject.GetComponent<Renderer>().material.color = color;
+        PickShape();
+        rigidbody = this.gameObject.GetComponentInChildren<Rigidbody>();
+        gameObject.GetComponentInChildren<Renderer>().material.color = color;
         AdjustScale();
+    }
+
+    private void PickShape()
+    {
+        transform.Find(shape).gameObject.SetActive(true);
     }
 
     private void AdjustScale()
@@ -71,7 +78,7 @@ public class BaseItem : MonoBehaviour
         {
             return true;
         }
-                        
+
         return false;
     }
 
@@ -93,16 +100,16 @@ public class BaseItem : MonoBehaviour
         {
             public static string CUBE = "CUBE";
             public static string SPHERE = "SPHERE";
-            public static string PYRAMID = "PYRAMID";
+            public static string CYLINDER = "CYLINDER";
             public static string CAPSULE = "CAPSULE";
             public static List<string> shapes = new List<string>{
-                CUBE, SPHERE, PYRAMID, CAPSULE
+                CUBE, SPHERE, CYLINDER, CAPSULE
             };
         }
         public static class WEIGHT
         {
             public static float LIGHT = 1f;
-            public static float MEDIUM= .75f;
+            public static float MEDIUM = .75f;
             public static float HEAVY = .5f;
             public static List<float> weights = new List<float>{
                 LIGHT, MEDIUM, HEAVY

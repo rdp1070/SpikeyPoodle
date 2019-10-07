@@ -48,18 +48,21 @@ public class PickupItem : MonoBehaviour
         Ray ray = new Ray(camera.transform.position, camera.transform.forward);
         RaycastHit raycastHit;
         // Cast the Ray for reachDistance
-        var doesCollide = Physics.Raycast(ray, out raycastHit, reachDistance);
-        // if it collides with an object of type BaseItem
-        Debug.DrawRay(ray.origin, ray.direction * reachDistance, Color.yellow);
-        
+        var doesCollide = Physics.Raycast(ray, out raycastHit, reachDistance, ~LayerMask.GetMask("Player"));
+
         if (doesCollide)
         {
-            BaseItem item;
-            if (raycastHit.collider.gameObject.TryGetComponent(out item)) {
+            Debug.DrawRay(ray.origin, ray.direction * reachDistance, Color.green);
+            BaseItem item = raycastHit.collider.gameObject.GetComponentInParent<BaseItem>();
+            if (item != null)
+            {
                 // then add item to the HeldItem
                 item.isHeld = true;
                 this.heldItem = item;
             }
+        }
+        else {
+            Debug.DrawRay(ray.origin, ray.direction * reachDistance, Color.red);
         }
 
     }

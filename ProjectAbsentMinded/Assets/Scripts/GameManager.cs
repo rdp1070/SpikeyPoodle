@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public PlayerDetection[] playerDetectors;
     public SpawnPoint[] spawnPoints;
     public int visionReduction = 7;
+    public DialogSystem dialogSystem;
 
     public bool IsThieving { get => CheckPlayerHasItem(); }
 
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     {
         playerDetectors = GetComponentsInChildren<PlayerDetection>();
         spawnPoints = GetComponentsInChildren<SpawnPoint>();
+        dialogSystem = GetComponentInChildren<DialogSystem>();
 
         if (scoreZone != null)
         {
@@ -35,13 +37,13 @@ public class GameManager : MonoBehaviour
             player.crouched.AddListener(ReduceVision);
             player.stand.AddListener(ReturnVision);
         }
-        
+
         for (var i = 0; i < spawnPoints.Length; i++)
         {
             var newItem = GenerateItem(spawnPoints[i].transform.position);
             allItems.Add(newItem);
         }
-        
+
         winItem = allItems[UnityEngine.Random.Range(0, allItems.Count)];
         defaultItem.gameObject.SetActive(false);
     }
@@ -51,7 +53,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ReturnVision()
     {
-        foreach (PlayerDetection detector in playerDetectors) {
+        foreach (PlayerDetection detector in playerDetectors)
+        {
             detector.viewDistance += visionReduction;
         }
     }
@@ -74,38 +77,32 @@ public class GameManager : MonoBehaviour
 
     void CheckWin()
     {
-        foreach (BaseItem i in scoreZone.items)
+        BaseItem item = scoreZone.items[scoreZone.items.Count - 1];
+        if (winItem.Equals(item))
         {
-            if (winItem.Equals(i))
-            {
-                Debug.Log("Winner!");
-                GetComponentInChildren<DialogSystem>().WinDialog();
-            }
-            else
-            {
-                Debug.Log("Not Winning");
-                sendClueInfoToDialog(scoreZone.items[scoreZone.items.Count - 1]);
-            }
-            // Probably transition to some other screen
-            // Or lock the player down and show the credits and a play again button
-            // Something like that.
-            // Or say go get me another item!!
+            Debug.Log("Winner!");
+        }
+        else
+        {
+            Debug.Log("Not Winning");
+            SendClueInfoToDialog(item);
         }
     }
 
-    BaseItem GenerateItem( Vector3 spawnPoint = new Vector3())
+    BaseItem GenerateItem(Vector3 spawnPoint = new Vector3())
     {
         BaseItem newItem;
-        newItem = Instantiate<BaseItem>(defaultItem);
+        newItem = Instantiate(defaultItem);
         newItem.color = BaseItem.ATTR.COLOR.colors[UnityEngine.Random.Range(0, BaseItem.ATTR.COLOR.colors.Count)];
         newItem.size = BaseItem.ATTR.SIZE.sizes[UnityEngine.Random.Range(0, BaseItem.ATTR.SIZE.sizes.Count)];
         newItem.shape = BaseItem.ATTR.SHAPE.shapes[UnityEngine.Random.Range(0, BaseItem.ATTR.SHAPE.shapes.Count)];
         newItem.weight = BaseItem.ATTR.WEIGHT.weights[UnityEngine.Random.Range(0, BaseItem.ATTR.WEIGHT.weights.Count)];
         newItem.transform.position = spawnPoint;
+        newItem.Init();
         return newItem;
     }
 
-    void sendClueInfoToDialog(BaseItem item)
+    void SendClueInfoToDialog(BaseItem item)
     {
         int amountIncorrect = 0;
         string randomDifference = "";
@@ -133,6 +130,10 @@ public class GameManager : MonoBehaviour
         }
         randomDifference = allDifferences[UnityEngine.Random.Range(0, allDifferences.Count)];
 
-        GetComponentInChildren<DialogSystem>().GenerateClue(amountIncorrect, randomDifference);
+
+        if (dialogSystem != null)
+        {
+            dialogSystem.GenerateClue(amountIncorrect, randomDifference);
+        }
     }
 }
